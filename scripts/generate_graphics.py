@@ -87,12 +87,18 @@ def category_color(item: dict) -> str:
 
 
 def draw_header(draw: ImageDraw.ImageDraw, title: str, subtitle: str, kicker: str) -> None:
+    badge_left = 1188
     draw.text((70, 54), kicker.upper(), fill=BLUE, font=font(24, True))
-    draw.text((70, 92), title, fill=TEXT, font=font(58, True))
+    title_size = 58
+    title_font = font(title_size, True)
+    while draw.textlength(title, font=title_font) > badge_left - 110 and title_size > 44:
+        title_size -= 2
+        title_font = font(title_size, True)
+    draw.text((70, 92), title, fill=TEXT, font=title_font)
     draw_wrapped(draw, (72, 170), subtitle, font(25), MUTED, 1110, 7)
-    rounded(draw, (1238, 58, 1530, 182), PANEL_2, GRID, 24)
-    draw.text((1262, 82), "Blue Origin ceiling", fill=MUTED, font=font(22, True))
-    draw.text((1262, 116), "4.45-5.07 kt", fill=WHITE, font=font(42, True))
+    rounded(draw, (badge_left, 56, 1530, 194), PANEL_2, GRID, 24)
+    draw.text((1216, 82), "Blue Origin ceiling", fill=MUTED, font=font(21, True))
+    draw.text((1216, 118), "4.45-5.07 kt", fill=WHITE, font=font(38, True))
 
 
 def draw_footer(draw: ImageDraw.ImageDraw, footer: str) -> None:
@@ -119,9 +125,12 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     span = max_log - min_log
     tick_step = max(1, math.ceil(span / 5))
 
+    plot_top = top - 10
+    plot_bottom = top + row_h * len(items) + 4
+
     for power in range(min_log, max_log + 1, tick_step):
         x = chart_left + int((power - min_log) / span * (chart_right - chart_left))
-        draw.line((x, top - 35, x, top + row_h * len(items) + 8), fill=GRID, width=1)
+        draw.line((x, plot_top, x, plot_bottom), fill=GRID, width=1)
         draw.text((x + 4, top - 32), fmt_yield(10**power), fill=FAINT, font=font(16))
 
     for idx, item in enumerate(items):
@@ -139,6 +148,8 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
         rounded(draw, (chart_left, y + 7, chart_right, y + 16), "#10161e", GRID, 6)
         rounded(draw, (x1, y + 5, max(x1 + 6, x2), y + 18), color, None, 7)
         draw.text((1440, y - 1), fmt_range(item["kt_min"], item["kt_max"]), fill=name_color, font=font(16, True if item.get("blue") else False), anchor="ra")
+
+    draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), outline=GRID, width=2)
 
     draw_footer(draw, footer)
     img.save(OUT_DIR / filename, quality=95)
