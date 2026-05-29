@@ -154,7 +154,7 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     draw.text((104, 310), "Actual blast-wave yield is not public; the chart uses the provable chemical-energy ceiling.", fill=MUTED, font=font(18))
     draw_legend(draw, legend_items(items), 1470, 278)
 
-    chart_left, chart_right = 525, 1370
+    chart_left, chart_right = 565, 1355
     value_x = 1490
     top, row_h = 360, 29
     min_log = math.floor(math.log10(min(item["kt_min"] for item in items)))
@@ -165,6 +165,7 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     plot_top = top - 10
     plot_bottom = top + row_h * len(items) + 4
 
+    draw.text((104, top - 18), "Y: ranked events", fill=FAINT, font=font(15, True))
     draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), fill="#111820", outline=BORDER, width=3)
 
     for power in range(min_log, max_log + 1, tick_step):
@@ -176,7 +177,7 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
         y = top + idx * row_h
         color = category_color(item)
         name_color = WHITE if item.get("blue") else TEXT
-        short_name = item["name"] if len(item["name"]) <= 33 else item["name"][:30] + "..."
+        short_name = item["name"] if len(item["name"]) <= 29 else item["name"][:26] + "..."
         draw.text((104, y - 1), f"{idx + 1}", fill=FAINT, font=font(16, True))
         draw.text((150, y - 1), short_name, fill=name_color, font=font(16, True if item.get("blue") else False))
 
@@ -189,6 +190,14 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
         draw.text((value_x, y - 1), fmt_range(item["kt_min"], item["kt_max"]), fill=name_color, font=font(16, True if item.get("blue") else False), anchor="ra")
 
     draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), outline=BORDER, width=3)
+    x_label = "X: TNT equivalent (log scale)"
+    draw.text(
+        (chart_left + (chart_right - chart_left) / 2, plot_bottom + 8),
+        x_label,
+        fill=MUTED,
+        font=font(15, True),
+        anchor="ma",
+    )
 
     draw_footer(draw, footer)
     img.save(OUT_DIR / filename, quality=95)
