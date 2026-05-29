@@ -182,7 +182,7 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     draw_rotated_label(
         img,
         (chart_left - 34, plot_top + (plot_bottom - plot_top) // 2),
-        "ranked events",
+        "Ranked Events",
         font(15, True),
         MUTED,
     )
