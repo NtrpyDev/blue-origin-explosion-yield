@@ -73,6 +73,19 @@ def draw_wrapped(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, fnt,
     return y
 
 
+def draw_rotated_label(img: Image.Image, center: tuple[int, int], text: str, fnt, fill: str) -> None:
+    bbox = ImageDraw.Draw(Image.new("RGBA", (1, 1))).textbbox((0, 0), text, font=fnt)
+    label_w = bbox[2] - bbox[0] + 12
+    label_h = bbox[3] - bbox[1] + 12
+    label = Image.new("RGBA", (label_w, label_h), (0, 0, 0, 0))
+    label_draw = ImageDraw.Draw(label)
+    label_draw.text((6 - bbox[0], 6 - bbox[1]), text, fill=fill, font=fnt)
+    rotated = label.rotate(90, expand=True)
+    x = int(center[0] - rotated.width / 2)
+    y = int(center[1] - rotated.height / 2)
+    img.alpha_composite(rotated, (x, y))
+
+
 def rounded(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], fill: str, outline: str | None = None, radius: int = 28, width: int = 1) -> None:
     draw.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=width)
 
@@ -142,7 +155,7 @@ def draw_footer(draw: ImageDraw.ImageDraw, footer: str) -> None:
 
 
 def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], footer: str) -> None:
-    img = Image.new("RGB", (W, H), BG)
+    img = Image.new("RGBA", (W, H), BG)
     draw = ImageDraw.Draw(img)
     draw_header(draw, title, subtitle, "TNT equivalent, log scale")
 
@@ -154,9 +167,9 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     draw.text((104, 310), "Actual blast-wave yield is not public; the chart uses the provable chemical-energy ceiling.", fill=MUTED, font=font(18))
     draw_legend(draw, legend_items(items), 1470, 278)
 
-    chart_left, chart_right = 565, 1355
+    chart_left, chart_right = 580, 1355
     value_x = 1490
-    top, row_h = 360, 29
+    top, row_h = 358, 27
     min_log = math.floor(math.log10(min(item["kt_min"] for item in items)))
     max_log = math.ceil(math.log10(max(item["kt_max"] for item in items)))
     span = max_log - min_log
@@ -165,8 +178,14 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     plot_top = top - 10
     plot_bottom = top + row_h * len(items) + 4
 
-    draw.text((104, top - 18), "Y: ranked events", fill=FAINT, font=font(15, True))
     draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), fill="#111820", outline=BORDER, width=3)
+    draw_rotated_label(
+        img,
+        (chart_left - 34, plot_top + (plot_bottom - plot_top) // 2),
+        "ranked events",
+        font(15, True),
+        MUTED,
+    )
 
     for power in range(min_log, max_log + 1, tick_step):
         x = chart_left + int((power - min_log) / span * (chart_right - chart_left))
@@ -190,9 +209,9 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
         draw.text((value_x, y - 1), fmt_range(item["kt_min"], item["kt_max"]), fill=name_color, font=font(16, True if item.get("blue") else False), anchor="ra")
 
     draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), outline=BORDER, width=3)
-    x_label = "X: TNT equivalent (log scale)"
+    x_label = "TNT Equivalent (log scale)"
     draw.text(
-        (chart_left + (chart_right - chart_left) / 2, plot_bottom + 8),
+        (chart_left + (chart_right - chart_left) / 2, plot_bottom + 18),
         x_label,
         fill=MUTED,
         font=font(15, True),
@@ -200,7 +219,7 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     )
 
     draw_footer(draw, footer)
-    img.save(OUT_DIR / filename, quality=95)
+    img.convert("RGB").save(OUT_DIR / filename, quality=95)
 
 
 def draw_summary(data: dict) -> None:
