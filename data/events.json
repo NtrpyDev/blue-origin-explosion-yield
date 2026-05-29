@@ -1,0 +1,70 @@
+{
+  "analysis_date": "2026-05-29",
+  "blue_origin": {
+    "event": "Blue Origin New Glenn pad explosion",
+    "date": "2026-05-28",
+    "best_public_result": "chemical-energy ceiling, not measured blast yield",
+    "full_stack_chemical_energy_tj_min": 18.6,
+    "full_stack_chemical_energy_tj_max": 21.2,
+    "tnt_equivalent_kt_min": 4.4455066921606115,
+    "tnt_equivalent_kt_max": 5.066921606118547,
+    "first_stage_lng_inventory_kt_min": 3.4372787437858507,
+    "first_stage_lng_inventory_kt_max": 4.191803346080306,
+    "actual_blast_yield_provable_bound_kt_min": 0,
+    "actual_blast_yield_provable_bound_kt_max": 5.066921606118547
+  },
+  "proof_inputs": {
+    "tnt_j_per_kt": 4184000000000,
+    "lng_lhv_mj_per_kg": 49.40424,
+    "lng_tank_m3": 710,
+    "liquid_methane_density_kg_m3": 422.6,
+    "lng_density_low_kg_m3": 410,
+    "lng_density_high_kg_m3": 500,
+    "new_glenn_full_stack_tj_min": 18.6,
+    "new_glenn_full_stack_tj_max": 21.2
+  },
+  "rankings": {
+    "non_nuclear": [
+      { "name": "Chicxulub impact", "kt_min": 72000000000, "kt_max": 72000000000, "category": "natural", "basis": "Estimated kinetic energy: 72 teratons TNT", "source": "https://en.wikipedia.org/wiki/Chicxulub_Crater" },
+      { "name": "Mount Tambora 1815 eruption", "kt_min": 33000000, "kt_max": 33000000, "category": "natural", "basis": "Commonly cited total eruption energy: 33 gigatons TNT", "source": "https://en.wikipedia.org/wiki/1815_eruption_of_Mount_Tambora" },
+      { "name": "Krakatoa 1883 eruption", "kt_min": 200000, "kt_max": 200000, "category": "natural", "basis": "Estimated eruption energy: 200 megatons TNT", "source": "https://en.wikipedia.org/wiki/1883_eruption_of_Krakatoa" },
+      { "name": "Hunga Tonga-Hunga Ha'apai 2022", "kt_min": 61000, "kt_max": 61000, "category": "natural", "basis": "Pressure-wave estimate: 61 megatons TNT", "source": "https://link.springer.com/article/10.1007/s00193-022-01092-4" },
+      { "name": "Tunguska 1908 airburst", "kt_min": 10000, "kt_max": 20000, "category": "natural", "basis": "NASA workshop consensus range: 10 to 20 megatons TNT", "source": "https://ntrs.nasa.gov/api/citations/20190002302/downloads/20190002302.pdf" },
+      { "name": "Chelyabinsk 2013 airburst", "kt_min": 440, "kt_max": 500, "category": "natural", "basis": "NASA impact energy estimate: about 440 kt; models 400 to 500 kt", "source": "https://cneos.jpl.nasa.gov/news/fireball_130301.html" },
+      { "name": "Blue Origin New Glenn pad explosion", "kt_min": 4.4455066921606115, "kt_max": 5.066921606118547, "category": "human non-nuclear", "basis": "Public full-stack chemical-energy ceiling; actual blast yield is not public", "source": "https://www.cbsnews.com/news/blue-origin-new-glenn-rocket-explodes-launchpad-florida/", "blue": true },
+      { "name": "Minor Scale test 1985", "kt_min": 4, "kt_max": 4.2, "category": "human non-nuclear", "basis": "4,744 tons ANFO; about 4 kt TNT, 17 TJ", "source": "https://www.osti.gov/biblio/5606687" },
+      { "name": "Heligoland Operation Big Bang 1947", "kt_min": 3.2, "kt_max": 3.2, "category": "human non-nuclear", "basis": "Ordnance disposal estimate: about 3.2 kt TNT", "source": "https://wsmrmuseum.com/2023/05/25/misty-castle-high-explosive-nuclear-effects-simulations-at-white-sands-missile-range/6/" },
+      { "name": "Halifax Explosion 1917", "kt_min": 2.9, "kt_max": 2.989, "category": "human non-nuclear", "basis": "High-explosive cargo detonation: about 2.9 kt TNT", "source": "https://sma.nasa.gov/docs/default-source/safety-messages/safetymessage-2013-01-07-ssmontblancandhalifaxexplosion.pdf?sfvrsn=d4ae1ef8_6" },
+      { "name": "Texas City disaster 1947", "kt_min": 1.134, "kt_max": 3, "category": "human non-nuclear", "basis": "Ammonium nitrate estimates vary from about 1.1 to 3 kt TNT", "source": "https://www.sciencemediacentre.org/expert-reaction-to-beirut-explosion/" },
+      { "name": "Port Chicago disaster 1944", "kt_min": 1.6, "kt_max": 2.2, "category": "human non-nuclear", "basis": "Military ammunition estimate: 1.6 to 2.2 kt TNT", "source": "https://en.wikipedia.org/wiki/Largest_artificial_non-nuclear_explosions" },
+      { "name": "Oppau explosion 1921", "kt_min": 1, "kt_max": 2, "category": "human non-nuclear", "basis": "Fertilizer detonation estimate: 1 to 2 kt TNT", "source": "https://www.aria.developpement-durable.gouv.fr/wp-content/files_mf/FD_14373_oppau_1921_ang.pdf" },
+      { "name": "Beirut port explosion 2020", "kt_min": 0.13, "kt_max": 2, "category": "human non-nuclear", "basis": "Open waveform and remote sensing range: 0.13 to 2 kt TNT", "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8266808/" },
+      { "name": "N1 launch explosion 1969", "kt_min": 0.0045, "kt_max": 1, "category": "human non-nuclear", "basis": "Actual blast likely far below 6.93 kt stored propellant energy", "source": "https://www.russianspaceweb.com/n1_5l.html" }
+    ],
+    "human_non_nuclear": [
+      { "name": "Blue Origin New Glenn pad explosion", "kt_min": 4.4455066921606115, "kt_max": 5.066921606118547, "category": "human non-nuclear", "basis": "Public full-stack chemical-energy ceiling; actual blast yield is not public", "source": "https://www.cbsnews.com/news/blue-origin-new-glenn-rocket-explodes-launchpad-florida/", "blue": true },
+      { "name": "Minor Scale test 1985", "kt_min": 4, "kt_max": 4.2, "category": "human non-nuclear", "basis": "4,744 tons ANFO; about 4 kt TNT, 17 TJ", "source": "https://www.osti.gov/biblio/5606687" },
+      { "name": "Heligoland Operation Big Bang 1947", "kt_min": 3.2, "kt_max": 3.2, "category": "human non-nuclear", "basis": "Ordnance disposal estimate: about 3.2 kt TNT", "source": "https://wsmrmuseum.com/2023/05/25/misty-castle-high-explosive-nuclear-effects-simulations-at-white-sands-missile-range/6/" },
+      { "name": "Halifax Explosion 1917", "kt_min": 2.9, "kt_max": 2.989, "category": "human non-nuclear", "basis": "High-explosive cargo detonation: about 2.9 kt TNT", "source": "https://sma.nasa.gov/docs/default-source/safety-messages/safetymessage-2013-01-07-ssmontblancandhalifaxexplosion.pdf?sfvrsn=d4ae1ef8_6" },
+      { "name": "Texas City disaster 1947", "kt_min": 1.134, "kt_max": 3, "category": "human non-nuclear", "basis": "Ammonium nitrate estimates vary from about 1.1 to 3 kt TNT", "source": "https://www.sciencemediacentre.org/expert-reaction-to-beirut-explosion/" },
+      { "name": "Port Chicago disaster 1944", "kt_min": 1.6, "kt_max": 2.2, "category": "human non-nuclear", "basis": "Military ammunition estimate: 1.6 to 2.2 kt TNT", "source": "https://en.wikipedia.org/wiki/Largest_artificial_non-nuclear_explosions" },
+      { "name": "Oppau explosion 1921", "kt_min": 1, "kt_max": 2, "category": "human non-nuclear", "basis": "Fertilizer detonation estimate: 1 to 2 kt TNT", "source": "https://www.aria.developpement-durable.gouv.fr/wp-content/files_mf/FD_14373_oppau_1921_ang.pdf" },
+      { "name": "Beirut port explosion 2020", "kt_min": 0.13, "kt_max": 2, "category": "human non-nuclear", "basis": "Open waveform and remote sensing range: 0.13 to 2 kt TNT", "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8266808/" },
+      { "name": "N1 launch explosion 1969", "kt_min": 0.0045, "kt_max": 1, "category": "human non-nuclear", "basis": "Actual blast likely far below 6.93 kt stored propellant energy", "source": "https://www.russianspaceweb.com/n1_5l.html" }
+    ],
+    "all_recorded": [
+      { "name": "Chicxulub impact", "kt_min": 72000000000, "kt_max": 72000000000, "category": "natural", "basis": "Estimated kinetic energy: 72 teratons TNT", "source": "https://en.wikipedia.org/wiki/Chicxulub_Crater" },
+      { "name": "Mount Tambora 1815 eruption", "kt_min": 33000000, "kt_max": 33000000, "category": "natural", "basis": "Commonly cited total eruption energy: 33 gigatons TNT", "source": "https://en.wikipedia.org/wiki/1815_eruption_of_Mount_Tambora" },
+      { "name": "Krakatoa 1883 eruption", "kt_min": 200000, "kt_max": 200000, "category": "natural", "basis": "Estimated eruption energy: 200 megatons TNT", "source": "https://en.wikipedia.org/wiki/1883_eruption_of_Krakatoa" },
+      { "name": "Hunga Tonga-Hunga Ha'apai 2022", "kt_min": 61000, "kt_max": 61000, "category": "natural", "basis": "Pressure-wave estimate: 61 megatons TNT", "source": "https://link.springer.com/article/10.1007/s00193-022-01092-4" },
+      { "name": "Tsar Bomba 1961", "kt_min": 50000, "kt_max": 58000, "category": "nuclear", "basis": "Official 50 Mt; older Western estimates 57 to 58 Mt", "source": "https://nuclearweaponarchive.org/Russia/TsarBomba.html" },
+      { "name": "Tunguska 1908 airburst", "kt_min": 10000, "kt_max": 20000, "category": "natural", "basis": "NASA workshop consensus range: 10 to 20 megatons TNT", "source": "https://ntrs.nasa.gov/api/citations/20190002302/downloads/20190002302.pdf" },
+      { "name": "Castle Bravo 1954", "kt_min": 15000, "kt_max": 15000, "category": "nuclear", "basis": "US thermonuclear test yield: 15 Mt TNT", "source": "https://ahf.nuclearmuseum.org/ahf/history/castle-bravo/" },
+      { "name": "Chelyabinsk 2013 airburst", "kt_min": 440, "kt_max": 500, "category": "natural", "basis": "NASA impact energy estimate: about 440 kt; models 400 to 500 kt", "source": "https://cneos.jpl.nasa.gov/news/fireball_130301.html" },
+      { "name": "Trinity 1945", "kt_min": 21, "kt_max": 24.8, "category": "nuclear", "basis": "Official 21 kt; 2021 reassessment 24.8 +/- 2 kt", "source": "https://www.osti.gov/opennet/manhattan-project-history/Events/1945/trinity.htm" },
+      { "name": "Blue Origin New Glenn pad explosion", "kt_min": 4.4455066921606115, "kt_max": 5.066921606118547, "category": "human non-nuclear", "basis": "Public full-stack chemical-energy ceiling; actual blast yield is not public", "source": "https://www.cbsnews.com/news/blue-origin-new-glenn-rocket-explodes-launchpad-florida/", "blue": true },
+      { "name": "Minor Scale test 1985", "kt_min": 4, "kt_max": 4.2, "category": "human non-nuclear", "basis": "4,744 tons ANFO; about 4 kt TNT, 17 TJ", "source": "https://www.osti.gov/biblio/5606687" },
+      { "name": "Heligoland Operation Big Bang 1947", "kt_min": 3.2, "kt_max": 3.2, "category": "human non-nuclear", "basis": "Ordnance disposal estimate: about 3.2 kt TNT", "source": "https://wsmrmuseum.com/2023/05/25/misty-castle-high-explosive-nuclear-effects-simulations-at-white-sands-missile-range/6/" }
+    ]
+  }
+}
