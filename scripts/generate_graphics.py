@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Twitter-ready PNG graphics for the Blue Origin yield analysis."""
+"""Generate PNG graphics for the Blue Origin yield analysis."""
 
 from __future__ import annotations
 

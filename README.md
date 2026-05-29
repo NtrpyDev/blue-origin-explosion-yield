@@ -1,6 +1,6 @@
 # Blue Origin New Glenn Explosion Yield Analysis
 
-Twitter-ready graphics and reproducible source data for estimating the TNT equivalent of the May 28, 2026 Blue Origin New Glenn pad explosion.
+Graphics and reproducible source data for estimating the TNT equivalent of the May 28, 2026 Blue Origin New Glenn pad explosion.
 
 ## Headline Result
 
@@ -14,14 +14,12 @@ The actual blast-wave yield is not publicly determinable from available sources 
 
 ## Graphics
 
-The `graphics/` directory contains 1600x900 PNGs suitable for Twitter/X posts:
+The `graphics/` directory contains 1600x900 PNGs:
 
 - `graphics/00-proof-summary.png`
 - `graphics/01-non-nuclear-ranking.png`
 - `graphics/02-human-made-non-nuclear-ranking.png`
 - `graphics/03-all-recorded-ranking.png`
-
-The Cursor canvas version of the analysis is included at `canvas/blue-origin-explosion-analysis.canvas.tsx`.
 
 ## Proofs
 
