@@ -25,6 +25,7 @@ TEXT = "#f2f5f8"
 MUTED = "#9aa7b4"
 FAINT = "#667381"
 GRID = "#2b3745"
+BORDER = "#516173"
 BLUE = "#4da3ff"
 BLUE_DARK = "#1d5fa8"
 WHITE = "#ffffff"
@@ -76,6 +77,15 @@ def rounded(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], fill: str
     draw.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=width)
 
 
+def fit_text(draw: ImageDraw.ImageDraw, text: str, max_width: int, start_size: int, *, bold: bool = False, min_size: int = 12) -> ImageFont.FreeTypeFont:
+    size = start_size
+    fnt = font(size, bold)
+    while draw.textlength(text, font=fnt) > max_width and size > min_size:
+        size -= 1
+        fnt = font(size, bold)
+    return fnt
+
+
 def category_color(item: dict) -> str:
     if item.get("blue"):
         return BLUE
@@ -114,11 +124,12 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     items = sorted(data, key=lambda item: item["kt_max"], reverse=True)
     blue_rank = next(i + 1 for i, item in enumerate(items) if item.get("blue"))
 
-    rounded(draw, (70, 250, 1530, 812), PANEL, GRID, 26)
+    rounded(draw, (70, 250, 1530, 812), PANEL, BORDER, 26, width=2)
     draw.text((104, 278), f"Blue rank by chemical-energy ceiling: #{blue_rank}", fill=WARN, font=font(24, True))
     draw.text((104, 310), "Actual blast-wave yield is not public; the chart uses the provable chemical-energy ceiling.", fill=MUTED, font=font(18))
 
-    chart_left, chart_right = 525, 1420
+    chart_left, chart_right = 525, 1370
+    value_x = 1490
     top, row_h = 360, 29
     min_log = math.floor(math.log10(min(item["kt_min"] for item in items)))
     max_log = math.ceil(math.log10(max(item["kt_max"] for item in items)))
@@ -128,9 +139,11 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     plot_top = top - 10
     plot_bottom = top + row_h * len(items) + 4
 
+    draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), fill="#111820", outline=BORDER, width=3)
+
     for power in range(min_log, max_log + 1, tick_step):
         x = chart_left + int((power - min_log) / span * (chart_right - chart_left))
-        draw.line((x, plot_top, x, plot_bottom), fill=GRID, width=1)
+        draw.line((x, plot_top + 3, x, plot_bottom - 3), fill=GRID, width=1)
         draw.text((x + 4, top - 32), fmt_yield(10**power), fill=FAINT, font=font(16))
 
     for idx, item in enumerate(items):
@@ -145,11 +158,11 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
         hi = math.log10(item["kt_max"])
         x1 = chart_left + int((lo - min_log) / span * (chart_right - chart_left))
         x2 = chart_left + int((hi - min_log) / span * (chart_right - chart_left))
-        rounded(draw, (chart_left, y + 7, chart_right, y + 16), "#10161e", GRID, 6)
+        draw.line((chart_left + 3, y + 11, chart_right - 3, y + 11), fill=GRID, width=1)
         rounded(draw, (x1, y + 5, max(x1 + 6, x2), y + 18), color, None, 7)
-        draw.text((1440, y - 1), fmt_range(item["kt_min"], item["kt_max"]), fill=name_color, font=font(16, True if item.get("blue") else False), anchor="ra")
+        draw.text((value_x, y - 1), fmt_range(item["kt_min"], item["kt_max"]), fill=name_color, font=font(16, True if item.get("blue") else False), anchor="ra")
 
-    draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), outline=GRID, width=2)
+    draw.rectangle((chart_left, plot_top, chart_right, plot_bottom), outline=BORDER, width=3)
 
     draw_footer(draw, footer)
     img.save(OUT_DIR / filename, quality=95)
@@ -161,33 +174,41 @@ def draw_summary(data: dict) -> None:
     draw_header(
         draw,
         "What Can Be Proven?",
-        "Public data bounds stored propellant energy. Actual blast yield needs measured blast, seismic, acoustic, or telemetry data.",
+        "Stored propellant energy gives a ceiling; measured blast-yield data is not public.",
         "Blue Origin New Glenn, May 28 2026",
     )
 
-    rounded(draw, (70, 270, 1530, 790), PANEL, GRID, 30)
+    rounded(draw, (70, 250, 1530, 812), PANEL, BORDER, 30, width=2)
     bo = data["blue_origin"]
     cards = [
-        ("Full-stack chemical-energy ceiling", f"{bo['tnt_equivalent_kt_min']:.2f}-{bo['tnt_equivalent_kt_max']:.2f} kt", "Uses public 18.6-21.2 TJ full-stack estimate."),
-        ("First-stage LNG inventory range", f"{bo['first_stage_lng_inventory_kt_min']:.2f}-{bo['first_stage_lng_inventory_kt_max']:.2f} kt", "710 m3 LNG tank with 410-500 kg/m3 density range."),
-        ("Actual blast yield bound", f"0-{bo['actual_blast_yield_provable_bound_kt_max']:.2f} kt", "Conservation of energy. Public data does not narrow it."),
+        ("Full-stack chemical-energy ceiling", f"{bo['tnt_equivalent_kt_min']:.2f}-{bo['tnt_equivalent_kt_max']:.2f} kt", "Public 18.6-21.2 TJ full-stack estimate."),
+        ("First-stage LNG inventory range", f"{bo['first_stage_lng_inventory_kt_min']:.2f}-{bo['first_stage_lng_inventory_kt_max']:.2f} kt", "710 m3 LNG tank with 410-500 kg/m3 density."),
+        ("Actual blast yield bound", f"0-{bo['actual_blast_yield_provable_bound_kt_max']:.2f} kt", "Conservation of energy; no tighter public measurement."),
     ]
     x = 105
     for label, value, note in cards:
-        rounded(draw, (x, 310, x + 440, 490), PANEL_2, GRID, 22)
-        draw.text((x + 26, 336), label, fill=MUTED, font=font(21, True))
-        draw.text((x + 26, 374), value, fill=BLUE if "Full-stack" in label else TEXT, font=font(45, True))
-        draw_wrapped(draw, (x + 26, 434), note, font(16), FAINT, 380, 3)
+        rounded(draw, (x, 280, x + 440, 430), PANEL_2, BORDER, 22, width=2)
+        label_font = fit_text(draw, label, 388, 20, bold=True, min_size=16)
+        draw.text((x + 26, 305), label, fill=MUTED, font=label_font)
+        value_font = fit_text(draw, value, 388, 45, bold=True, min_size=34)
+        draw.text((x + 26, 345), value, fill=BLUE if "Full-stack" in label else TEXT, font=value_font)
+        draw_wrapped(draw, (x + 26, 394), note, font(14), FAINT, 382, 2)
         x += 475
 
-    proof = (
-        "Proof sketch: E = m * LHV and Y_kt = E / 4.184e12 J. "
-        "For first-stage LNG: m = rho * V. For the full-stack public estimate: "
-        "18.6-21.2 TJ / 4.184 TJ per kt = 4.45-5.07 kt. "
-        "Since blast-wave energy cannot exceed available chemical energy, actual blast yield <= 5.07 kt. "
-        "No public measurement proves a tighter actual-blast value."
-    )
-    draw_wrapped(draw, (112, 555), proof, font(30), TEXT, 1345, 8)
+    steps = [
+        ("1. Convert to TNT", "Y_kt = E / 4.184e12 J", "1 kt TNT = 10^12 cal = 4.184 TJ."),
+        ("2. Cross-check fuel", "E = rho * V * LHV", "First-stage LNG gives 3.44-4.19 kt."),
+        ("3. Full-stack ceiling", "18.6-21.2 TJ / 4.184 TJ", "Public range gives 4.45-5.07 kt."),
+        ("4. Hard blast bound", "0 <= Y_blast <= Y_chemical", "Actual blast cannot exceed 5.07 kt."),
+    ]
+    step_boxes = [(105, 480, 760, 610), (815, 480, 1470, 610), (105, 642, 760, 772), (815, 642, 1470, 772)]
+    for (heading, formula, detail), box in zip(steps, step_boxes):
+        rounded(draw, box, "#111820", BORDER, 22, width=2)
+        x1, y1, _x2, _y2 = box
+        draw.text((x1 + 24, y1 + 20), heading, fill=WARN, font=font(20, True))
+        draw.text((x1 + 24, y1 + 55), formula, fill=TEXT, font=font(25, True))
+        draw_wrapped(draw, (x1 + 24, y1 + 94), detail, font(16), MUTED, 595, 2)
+
     draw_footer(draw, "Sources: CBS News; Blue Origin New Glenn page; AFDC fuel properties; Glasstone and Dolan TNT convention; NASA launch-vehicle blast environment papers.")
     img.save(OUT_DIR / "00-proof-summary.png", quality=95)
 
