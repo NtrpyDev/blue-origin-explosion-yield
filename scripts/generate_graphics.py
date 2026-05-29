@@ -96,6 +96,31 @@ def category_color(item: dict) -> str:
     return HUMAN
 
 
+def legend_items(data: list[dict]) -> list[tuple[str, str]]:
+    items: list[tuple[str, str]] = [("Blue Origin", BLUE)]
+    categories = {item["category"] for item in data if not item.get("blue")}
+    if "natural" in categories:
+        items.append(("Natural", NATURAL))
+    if "nuclear" in categories:
+        items.append(("Nuclear", NUCLEAR))
+    if "human non-nuclear" in categories:
+        items.append(("Human-made", HUMAN))
+    return items
+
+
+def draw_legend(draw: ImageDraw.ImageDraw, items: list[tuple[str, str]], right: int, y: int) -> None:
+    fnt = font(15, True)
+    gap = 24
+    swatch = 17
+    widths = [swatch + 8 + int(draw.textlength(label, font=fnt)) for label, _color in items]
+    total_width = sum(widths) + gap * (len(items) - 1)
+    x = right - total_width
+    for (label, color), width in zip(items, widths):
+        rounded(draw, (x, y + 2, x + swatch, y + 19), color, None, 4)
+        draw.text((x + swatch + 8, y), label, fill=MUTED, font=fnt)
+        x += width + gap
+
+
 def draw_header(draw: ImageDraw.ImageDraw, title: str, subtitle: str, kicker: str) -> None:
     badge_left = 1188
     draw.text((70, 54), kicker.upper(), fill=BLUE, font=font(24, True))
@@ -127,6 +152,7 @@ def draw_log_chart(filename: str, title: str, subtitle: str, data: list[dict], f
     rounded(draw, (70, 250, 1530, 812), PANEL, BORDER, 26, width=2)
     draw.text((104, 278), f"Blue rank by chemical-energy ceiling: #{blue_rank}", fill=WARN, font=font(24, True))
     draw.text((104, 310), "Actual blast-wave yield is not public; the chart uses the provable chemical-energy ceiling.", fill=MUTED, font=font(18))
+    draw_legend(draw, legend_items(items), 1470, 278)
 
     chart_left, chart_right = 525, 1370
     value_x = 1490
